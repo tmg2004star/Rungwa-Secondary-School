@@ -541,7 +541,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <!-- Admin Header Bar -->
                 <div class="bg-navy-900 text-white p-6 sm:p-10 rounded-3xl shadow-2xl mb-8 flex flex-col sm:flex-row justify-between items-center gap-4 border border-gold-500/20">
                     <div>
-                        <span class="text-gold-400 font-semibold text-xs uppercase tracking-wider bg-gold-500/20 px-3 py-1 rounded-full">ADMINISTRATION PORTAL (SUPABASE CONNECTED)</span>
+                        <span class="text-gold-400 font-semibold text-xs uppercase tracking-wider bg-gold-500/20 px-3 py-1 rounded-full">ADMINISTRATION PORTAL</span>
                         <h1 class="text-3xl font-extrabold mt-2">School Management Dashboard</h1>
                         <p class="text-slate-300 text-xs mt-1">Logged in securely as Administrator (Rungwa Secondary School No. 2795)</p>
                     </div>
@@ -605,7 +605,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                                     <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Content / Description (Optional if document attached)</label>
                                     <textarea id="adminPostDesc" rows="3" class="w-full px-4 py-3.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-gold-500" placeholder="Andika maelezo kamili au ambatanisha document..."></textarea>
                                 </div>
-                                <button type="submit" class="px-6 py-3.5 bg-navy-900 hover:bg-navy-800 text-white font-bold rounded-xl text-xs uppercase tracking-wider transition shadow">Publish Update to Supabase →</button>
+                                <button type="submit" class="px-6 py-3.5 bg-navy-900 hover:bg-navy-800 text-white font-bold rounded-xl text-xs uppercase tracking-wider transition shadow">Chapisha Taarifa →</button>
                             </form>
                         </div>
 
@@ -719,7 +719,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <!-- 6. Admin Uploaded Content Management & Deletion List (Files Expiry & Deletion) -->
                         <div class="bg-white p-8 rounded-3xl shadow-xl border border-slate-200">
                             <h2 class="text-xl font-bold text-navy-900 mb-4 flex items-center gap-2"><i class="fa-solid fa-trash-can text-red-600"></i> Manage & Delete Uploaded Files & Data</h2>
-                            <p class="text-slate-500 text-xs mb-6">Orodha ya picha, logo, taarifa, na files zote (ikiwemo matokeo ya wanafunzi na documents zilizopakiwa) zilizopo kwenye Supabase. Admin anaweza kuzifuta muda wake ukiisha.</p>
+                            <p class="text-slate-500 text-xs mb-6">Orodha ya picha, logo, taarifa, na files zote (ikiwemo matokeo ya wanafunzi na documents zilizopakiwa). Admin anaweza kuzifuta muda wake ukiisha.</p>
                             
                             <div class="space-y-6">
                                 <!-- Student Exam Results Management -->
@@ -768,9 +768,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                                 <span><i class="fa-solid fa-inbox text-gold-600"></i> Received Messages</span>
                                 <span id="msgCountBadge" class="px-2.5 py-0.5 rounded-full bg-gold-500/20 text-gold-600 text-xs font-bold">0</span>
                             </h2>
-                            <p class="text-slate-500 text-xs mb-6">Ujumbe uliotumwa na wageni (Kutoka Supabase).</p>
+                            <p class="text-slate-500 text-xs mb-6">Ujumbe uliotumwa na wageni.</p>
                             <div id="adminMessagesList" class="space-y-4 max-h-[600px] overflow-y-auto custom-scrollbar">
-                                <p class="text-slate-400 text-xs text-center py-8">Inapakia ujumbe kutoka Supabase...</p>
+                                <p class="text-slate-400 text-xs text-center py-8">Inapakia ujumbe...</p>
                             </div>
                         </div>
                     </div>
@@ -864,11 +864,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         const STORAGE_KEY = "rungwa_school_portal_supabase_sync_v2";
 
-        // Shows a clear on-screen warning when Supabase rejects the connection (e.g. wrong anon key or RLS blocking)
+        // Muunganisho wa seva unapokataliwa. Haitaji kuonyesha jina la mtoa huduma;
+        // tunaweka ujumbe wa jumla tu na maelezo kamili yanabaki kwenye console.
         function showSupabaseBanner(error) {
-            const code = (error && (error.code || error.status)) || '';
-            const msg = (error && error.message) || 'Imeshindikana kuwasiliana na Supabase';
-            console.error('Supabase connection error:', error);
+            console.error('Connection notice:', error);
             let bar = document.getElementById('supabaseErrorBar');
             if (!bar) {
                 bar = document.createElement('div');
@@ -876,9 +875,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 bar.style.cssText = 'position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#b91c1c;color:#fff;padding:12px 16px;font-size:13px;font-family:Inter,sans-serif;box-shadow:0 -4px 12px rgba(0,0,0,.25);';
                 document.body.appendChild(bar);
             }
-            bar.innerHTML = '<strong>⚠️ Supabase haijaunganika (' + (code || 'error') + '):</strong> ' +
-                msg.replace(/</g,'&lt;') +
-                '. <br>Hakikisha (1) umeweka <b>anon public key</b> sahihi kutoka Supabase &rarr; Project Settings &rarr; API, na (2) umeweka <b>RLS policies</b> zinazoruhusu anon. Data inaonyeshwa kutoka nakala ya ndani (localStorage) kwa sasa.';
+            bar.innerHTML = '<strong>⚠️ Tatizo la muunganisho wa mtandao.</strong> Tafadhali hakikisha una intaneti kisha jaribu tena.';
         }
         function hideSupabaseBanner() {
             const bar = document.getElementById('supabaseErrorBar');
@@ -986,47 +983,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     })).sort((a, b) => (b.id || 0) - (a.id || 0));
                 }
 
-                console.log("Data successfully loaded from Supabase!");
+                console.log("Data loaded successfully.");
             } catch (err) {
-                console.warn("Supabase fetch notice (using localStorage backup):", err.message);
-                const saved = localStorage.getItem(STORAGE_KEY);
-                if (saved) {
-                    try { appState = JSON.parse(saved); } catch(e) {}
-                }
+                console.warn("Data fetch notice:", err.message);
             }
             renderDynamicContent();
             renderAdminDashboard();
         }
 
         function saveStateLocally() {
-            // Try to save the full state. Base64 images/PDFs can exceed the ~5MB
-            // localStorage quota, so on failure we save a slim copy WITHOUT the
-            // heavy file blobs (Supabase remains the real source of truth).
-            try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
-            } catch (e) {
-                try {
-                    const strip = (arr, fields) => (arr || []).map(o => {
-                        const c = { ...o };
-                        fields.forEach(f => { if (c[f]) c[f] = null; });
-                        return c;
-                    });
-                    const slim = {
-                        ...appState,
-                        logo: null, schoolLifeImg: null, subpageBanner: null,
-                        gallery: strip(appState.gallery, ['url']),
-                        news: strip(appState.news, ['image', 'docUrl']),
-                        events: strip(appState.events, ['image', 'docUrl']),
-                        announcements: strip(appState.announcements, ['image', 'docUrl']),
-                        joiningFiles: strip(appState.joiningFiles, ['dataUrl']),
-                        studentResults: strip(appState.studentResults, ['dataUrl'])
-                    };
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(slim));
-                    console.warn("Local storage quota exceeded: saved a slim backup without file blobs. Supabase bado ndiyo chanzo kikuu cha data.");
-                } catch (e2) {
-                    console.warn("Local backup skipped (quota). Data bado zinahifadhiwa Supabase.");
-                }
-            }
+            // Hakuna uhifadhi wa localStorage tena. Data zote zinahifadhiwa kwenye
+            // seva ya mbali pekee (backend). appState hubaki kama nakala ya muda
+            // ndani ya kumbukumbu (RAM) wakati ukurasa umefunguliwa tu.
+            // Function hii imeachwa (no-op) ili kuepuka error ya quota.
+            return;
         }
 
         async function syncSettingToSupabase(key, value) {
@@ -1207,7 +1177,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             await syncMessageToSupabase(msgObj);
 
             const status = document.getElementById('contactFormStatus');
-            status.textContent = "✅ Ujumbe wako umetumwa na kuhifadhiwa kwenye Supabase!";
+            status.textContent = "✅ Ujumbe wako umetumwa kwa mafanikio!";
             status.className = "text-center text-sm font-semibold text-green-600";
             document.getElementById('contactFormSpa').reset();
             alertMessage("Ujumbe umehifadhiwa kikamilifu!");
@@ -1245,7 +1215,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 renderDynamicContent();
                 renderAdminDashboard();
                 event.target.reset();
-                alertMessage("✅ Taarifa imewekwa kwenye Supabase kwa mafanikio!");
+                alertMessage("✅ Taarifa imewekwa kwa mafanikio!");
             }
 
             let imageUrl = null;
@@ -1324,7 +1294,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     await syncSettingToSupabase('logo', e.target.result);
                     applyVisualAssets();
                     renderAdminDashboard();
-                    alertMessage("✅ Logo imehifadhiwa kwenye Supabase!");
+                    alertMessage("✅ Logo imehifadhiwa kwa mafanikio!");
                 };
                 reader.readAsDataURL(file);
             }
@@ -1590,7 +1560,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             await syncSettingToSupabase(key, null);
             renderDynamicContent();
             renderAdminDashboard();
-            alertMessage("🗑️ Asset imefutwa kutoka Supabase!");
+            alertMessage("🗑️ Asset imefutwa kwa mafanikio!");
         }
 
         async function deleteGalleryPhoto(id) {
